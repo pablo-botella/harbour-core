@@ -85,4 +85,8 @@ LIBNAME := hbvmmt
 
 HB_CFLAGS += -DHB_MT_VM
 
+ifeq ($(HB_SANDBOX),yes)
+   HB_CFLAGS += -DHB_VM_SANDBOX
+endif
+
 include $(TOP)$(ROOT)config/lib.mk

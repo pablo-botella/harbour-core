@@ -1258,4 +1258,8 @@ HB_EXTERN_END
 #include "hbcompdf.h"
 #endif
 
+#if defined HB_VM_SANDBOX
+#include "hbsandbox.h"
+#endif 
+
 #endif /* HB_APIEXT_H_ */

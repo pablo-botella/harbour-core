@@ -142,6 +142,10 @@ typedef struct
 HB_DYN_HANDLES, * PHB_DYN_HANDLES;
 #endif
 
+#if defined( HB_VM_SANDBOX )
+#  include "hbsandbox.h"
+#endif
+
 /* stack managed by the virtual machine */
 typedef struct
 {
@@ -180,6 +184,10 @@ typedef struct
    char *     pDirBuffer;     /* MT safe buffer for hb_fsCurDir() results */
    void *     allocator;      /* memory manager global struct pointer */
 #endif
+#if defined( HB_VM_SANDBOX )
+   PHB_SANDBOX hSandbox;     /* current sandbox or NULL */
+#endif  
+
 } HB_STACK, * PHB_STACK;
 
 #if defined( _HB_STACK_MACROS_ )

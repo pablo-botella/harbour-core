@@ -128,6 +128,11 @@ endif
 endif
 endif
 endif
+ifeq ($(HB_SANDBOX),yes)
+   HB_CFLAGS += -DHB_VM_SANDBOX
+   HB_MT := yes
+endif
+
 ifneq ($(HB_MT),no)
    DIRS += vmmt
 endif

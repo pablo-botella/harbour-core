@@ -242,6 +242,7 @@ static void hb_stack_free( PHB_STACK pStack )
       pStack->uiDynH = 0;
    }
 #endif
+
 }
 
 void hb_stackDestroyTSD( void )

@@ -269,6 +269,9 @@ static void * s_main_thread = NULL;
 #define HB_SEQ_CANRECOVER  64
 #define HB_SEQ_DOALWAYS    128
 
+/* #define HB_SEQ_HASSANDBOX  256 defined in hbsandbox.h */
+
+
 static PHB_FUNC_LIST s_InitFunctions = NULL;
 static PHB_FUNC_LIST s_ExitFunctions = NULL;
 static PHB_FUNC_LIST s_QuitFunctions = NULL;
@@ -2007,6 +2010,12 @@ void hb_vmExecute( const HB_BYTE * pCode, PHB_SYMB pSymbols )
             if( hb_stackItemFromTop( HB_RECOVER_STATE )->type != HB_IT_RECOVER )
                hb_errInternal( HB_EI_ERRUNRECOV, "HB_P_ALWAYSEND", NULL, NULL );
 #endif
+#if defined( HB_VM_SANDBOX )
+            if( hb_stackItemFromTop( HB_RECOVER_STATE )->item.asRecover.flags & HB_SEQ_HASSANDBOX )
+            {
+               hb_vmSandboxEnvelopeClean();
+            }
+#endif
             uiPrevAction = hb_stackItemFromTop( HB_RECOVER_STATE )->item.asRecover.flags;
             uiCurrAction = hb_stackItemFromTop( HB_RECOVER_STATE )->item.asRecover.request;
 
@@ -2089,6 +2098,10 @@ void hb_vmExecute( const HB_BYTE * pCode, PHB_SYMB pSymbols )
 #if defined( _HB_RECOVER_DEBUG )
             if( hb_stackItemFromTop( HB_RECOVER_STATE )->type != HB_IT_RECOVER )
                hb_errInternal( HB_EI_ERRUNRECOV, "HB_P_SEQEND", NULL, NULL );
+#endif
+#if defined( HB_VM_SANDBOX )
+            if( hb_stackItemFromTop( HB_RECOVER_STATE )->item.asRecover.flags & HB_SEQ_HASSANDBOX )
+               hb_vmSandboxEnvelopeClean();
 #endif
             /*
              * 2) Restore previous recovery state
@@ -12570,6 +12583,7 @@ HB_FUNC( ERRORLEVEL )
       /* Only replace the error level if a parameter was passed */
       s_nErrorLevel = hb_parni( 1 );
 }
+
 
 
 /* NOTE: We should make sure that these get linked.
